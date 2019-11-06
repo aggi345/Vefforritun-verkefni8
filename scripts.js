@@ -9,35 +9,29 @@ document.addEventListener('DOMContentLoaded', () => {
 
 const text = (() => {
   let items;
-  let form;
 
   function init(_form, _items) {
     items = _items;
-    form = _form;
+
     _form.addEventListener('submit', formHandler);
 
     for (let item of items.querySelectorAll('.item')) {
-      console.log(item)
       item.querySelector('.item__checkbox').addEventListener('change', finish);
 
       item.querySelector('.item__text').addEventListener('click', edit);
 
       item.querySelector('.item__button').addEventListener('click', deleteItem);
-
-
     }
-
-    // TODO láta hluti í _items virka
   }
 
   function formHandler(e) {
     e.preventDefault();
-    const INPUT = e.target.querySelector('.form__input')
-    let text = INPUT.value;
+    let input = e.target.querySelector('.form__input')
+    let text = input.value;
 
     if (text.trim().length > 0) {
       add(text);
-      INPUT.value = '';
+      input.value = '';
     }
   }
 
@@ -48,9 +42,9 @@ const text = (() => {
 
   // event handler fyrir það að breyta færslu
   function edit(e) {
-    const text = e.target.textContent
+    let text = e.target.textContent
 
-    const input = el('input', 'item__edit');
+    let input = el('input', 'item__edit');
     input.value = text;
     input.addEventListener('keypress', commit);
 
@@ -60,7 +54,7 @@ const text = (() => {
 
   // event handler fyrir það að klára að breyta færslu
   function commit(e) {
-    if (e.keyCode === 13) {
+    if (e.keyCode === ENTER_KEYCODE) {
       const text = e.target.value;
 
       const span = el('span', 'item__text', edit);
@@ -72,16 +66,16 @@ const text = (() => {
 
   // fall sem sér um að bæta við nýju item
   function add(value) {
-    let ele = el('li', 'item', null);
+    let ele = el('li', 'item');
 
-    const input = el('input', 'item__checkbox');
-    input.addEventListener('change', finish);
+    let input = el('input', 'item__checkbox');
     input.setAttribute('type', 'checkbox');
+    input.addEventListener('change', finish);
 
-    const span = el('span', 'item__text', edit);
+    let span = el('span', 'item__text', edit);
     span.textContent = value;
 
-    const button = el('button', 'item__button', deleteItem);
+    let button = el('button', 'item__button', deleteItem);
     button.textContent = 'Eyða';
 
     ele.appendChild(input);
@@ -98,7 +92,7 @@ const text = (() => {
 
   // hjálparfall til að útbúa element
   function el(type, className, clickHandler) {
-    const element = document.createElement(type);
+    let element = document.createElement(type);
 
     if (className) {
       element.setAttribute('class', className);
